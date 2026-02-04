@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+src/wttr_cli/__init__.py
+src/wttr_cli/cli.py
+src/wttr_cli/core.py
+src/wttr_cli.egg-info/PKG-INFO
+src/wttr_cli.egg-info/SOURCES.txt
+src/wttr_cli.egg-info/dependency_links.txt
+src/wttr_cli.egg-info/entry_points.txt
+src/wttr_cli.egg-info/requires.txt
+src/wttr_cli.egg-info/top_level.txt
+tests/test_core.py
