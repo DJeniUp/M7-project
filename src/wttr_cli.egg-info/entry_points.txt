@@ -1,2 +1,0 @@
-[console_scripts]
-weather = wttr_cli.cli:main

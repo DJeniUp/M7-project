@@ -1,1 +1,0 @@
-wttr_cli
