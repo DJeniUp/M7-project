@@ -10,7 +10,7 @@ class UniversityData:
     courses: dict[str, Course] = field(default_factory=dict)
     teachers: dict[str, Teacher] = field(default_factory=dict)
 
-    modules_count: int = 0
+    modules_count: int = 14
     max_courses_per_module: int = 9
 
 

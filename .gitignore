@@ -27,3 +27,6 @@ dist/
 
 # jupyter
 .ipynb_checkpoints/
+
+#not now
+src/Scheduler.py
