@@ -1,8 +1,7 @@
 from dataclasses import dataclass, field
-from typing import dict
 
-from Course import Course
-from Teachers import Teacher
+from Classes.Course import Course
+from Classes.Teachers import Teacher
 
 
 @dataclass

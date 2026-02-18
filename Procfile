@@ -1,0 +1,1 @@
+web: gunicorn university_scheduler.wsgi:application --chdir university_scheduler --bind 0.0.0.0:$PORT --workers 2 --timeout 120

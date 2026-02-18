@@ -1,0 +1,1 @@
+-r university_scheduler/requirements.txt
