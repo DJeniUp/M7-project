@@ -1,6 +1,12 @@
-﻿from django import forms
+from django import forms
 
 
 class ScheduleForm(forms.Form):
-    modules_count = forms.IntegerField(min_value=1, max_value=20, initial=6)
-    max_courses_per_module = forms.IntegerField(min_value=1, max_value=100, initial=4)
+    ALGORITHM_CHOICES = (
+        ('internal', 'Internal Algorithm'),
+        ('external', 'External Algorithm'),
+    )
+
+    algorithm = forms.ChoiceField(choices=ALGORITHM_CHOICES, initial='internal')
+    modules_count = forms.IntegerField(min_value=1, max_value=20, initial=14)
+    max_courses_per_module = forms.IntegerField(min_value=1, max_value=100, initial=9)

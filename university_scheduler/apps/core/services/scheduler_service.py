@@ -62,9 +62,10 @@ class SchedulerService:
                 }
             )
 
+        ordered_schedule: dict[int, list[dict[str, str]]] = {}
         for module_number in range(1, modules_count + 1):
-            schedule_by_module[module_number] = sorted(
+            ordered_schedule[module_number] = sorted(
                 schedule_by_module[module_number], key=lambda item: item['name']
             )
 
-        return dict(schedule_by_module)
+        return ordered_schedule
