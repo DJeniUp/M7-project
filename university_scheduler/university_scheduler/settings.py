@@ -15,8 +15,13 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'change-this-in-production')
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in {'1', 'true', 'yes'}
 
 ALLOWED_HOSTS = [
-    host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if host.strip()
+    host.strip()
+    for host in os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+    if host.strip()
 ]
+KOYEB_PUBLIC_DOMAIN = os.getenv('KOYEB_PUBLIC_DOMAIN', '').strip()
+if KOYEB_PUBLIC_DOMAIN and KOYEB_PUBLIC_DOMAIN not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(KOYEB_PUBLIC_DOMAIN)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -126,3 +131,7 @@ if not DEBUG:
         for origin in os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',')
         if origin.strip()
     ]
+    if KOYEB_PUBLIC_DOMAIN:
+        koyeb_origin = f'https://{KOYEB_PUBLIC_DOMAIN}'
+        if koyeb_origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(koyeb_origin)
