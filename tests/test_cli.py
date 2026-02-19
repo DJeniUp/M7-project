@@ -1,37 +1,22 @@
-import pytest
-from unittest.mock import patch
-from wttr_cli.cli import format_weather
+from pathlib import Path
+import sys
 
 
-def test_format_weather():
-    fake = {
-        "current_condition": [
-            {"temp_C": "10", "weatherDesc": [{"value": "Sunny"}]}
-        ],
-        "weather": [
-            {"maxtempC": "12", "mintempC": "5"}
-        ]
-    }
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SRC_ROOT = PROJECT_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
 
-    out = format_weather(fake, "Berlin")
-    assert "Sunny" in out
+from Classes.University import UniversityData
 
 
-@patch("wttr_cli.cli.requests.get")
-def test_network_mock(mock_get):
-    class R:
-        def raise_for_status(self): pass
-        def json(self): return {"current_condition":[{"temp_C":"1","weatherDesc":[{"value":"Clear"}]}],
-                                "weather":[{"maxtempC":"2","mintempC":"0"}]}
-
-    mock_get.return_value = R()
-
-    from wttr_cli.cli import fetch_weather
-    data = fetch_weather("Berlin")
-    assert "current_condition" in data
+def test_university_data_defaults_match_expected_constraints():
+    data = UniversityData()
+    assert data.modules_count == 14
+    assert data.max_courses_per_module == 9
 
 
-def test_missing_city():
-    import subprocess
-    result = subprocess.run(["weather"], capture_output=True)
-    assert result.returncode != 0
+def test_university_data_accepts_custom_constraints():
+    data = UniversityData(modules_count=10, max_courses_per_module=5)
+    assert data.modules_count == 10
+    assert data.max_courses_per_module == 5

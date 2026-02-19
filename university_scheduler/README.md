@@ -1,138 +1,81 @@
-# University Scheduler
+ï»¿# University Scheduler
 
-Production-ready Django project for scheduling university courses with clean architecture separation:
+## 1. Project description
+Django application for university course scheduling with two algorithms:
+- Internal solver (`apps/core/services/scheduler_service.py`)
+- External algorithm integration (`apps/core/services/external_scheduler_service.py`) backed by `university_cirriculum_scheduler/`
 
-- Django ORM layer (`apps/core/models.py`)
-- Service/business layer (`apps/core/services/`)
-- Pure domain layer with CP-SAT solver (`apps/core/domain/`)
+The app supports CSV bootstrap, schedule generation, and web UI output per module.
 
-## Tech Stack
+## ii. Dev setup instructions (step-by-step)
+1. From repository root, create and activate a virtual environment.
 
-- Django 5+
-- PostgreSQL
-- OR-Tools (CP-SAT)
-
-## Project Structure
-
-```text
-university_scheduler/
-+-- manage.py
-+-- requirements.txt
-+-- README.md
-+-- university-cirriculum-scheduler/          # External algorithm repository
-+-- university_scheduler/
-¦   +-- settings.py
-¦   +-- urls.py
-¦   +-- asgi.py
-¦   L-- wsgi.py
-L-- apps/
-    L-- core/
-        +-- admin.py
-        +-- forms.py
-        +-- models.py
-        +-- urls.py
-        +-- views.py
-        +-- services/
-        ¦   +-- scheduler_service.py          # Internal algorithm
-        ¦   L-- external_scheduler_service.py # Wrapper for external algorithm
-        +-- domain/
-        ¦   +-- course.py
-        ¦   +-- teacher.py
-        ¦   +-- university_data.py
-        ¦   L-- scheduler.py
-        L-- templates/core/
-            L-- schedule.html
+Windows PowerShell:
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-## Where To Find What
-
-- Schedule page view: `apps/core/views.py` (`ScheduleView`)
-- Schedule form and algorithm dropdown: `apps/core/forms.py` (`ScheduleForm`)
-- Internal schedule generation: `apps/core/services/scheduler_service.py` (`SchedulerService`)
-- External schedule generation wrapper: `apps/core/services/external_scheduler_service.py` (`ExternalSchedulerService`)
-- External source algorithm code: `university-cirriculum-scheduler/classes/`
-
-## Algorithm Selection
-
-The schedule form now supports two algorithms:
-
-- `internal` -> existing CP-SAT based `SchedulerService`
-- `external` -> adapted algorithm from `university-cirriculum-scheduler`
-
-Selection is made from the `algorithm` dropdown in the form and handled in `ScheduleView.form_valid()`.
-
-## Installation
-
-1. Create and activate a virtual environment.
 2. Install dependencies:
-
 ```bash
 pip install -r requirements.txt
 ```
 
-## Environment Variables
-
-Set these before running:
-
-- `DJANGO_SECRET_KEY`
-- `DJANGO_DEBUG` (`True` or `False`)
-- `DJANGO_ALLOWED_HOSTS` (comma-separated, e.g. `localhost,127.0.0.1`)
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_HOST`
-- `DB_PORT`
-
-Example (PowerShell):
-
-```powershell
-$env:DJANGO_SECRET_KEY = "replace-me"
-$env:DJANGO_DEBUG = "True"
-$env:DJANGO_ALLOWED_HOSTS = "localhost,127.0.0.1"
-$env:DB_NAME = "university_scheduler"
-$env:DB_USER = "postgres"
-$env:DB_PASSWORD = "postgres"
-$env:DB_HOST = "localhost"
-$env:DB_PORT = "5432"
-```
-
-## Database Setup
-
-Run migrations:
-
+3. Run migrations:
 ```bash
 python manage.py migrate
 ```
 
-Create admin user:
-
-```bash
-python manage.py createsuperuser
-```
-
-## Run the App
-
+4. Start server:
 ```bash
 python manage.py runserver
 ```
 
-Open:
+5. Open `http://127.0.0.1:8000/`.
 
-- Scheduler page: `http://127.0.0.1:8000/`
-- Admin page: `http://127.0.0.1:8000/admin/`
+## iii. How to run tests
+Run Django tests:
+```bash
+python manage.py test
+```
 
-## Scheduling Constraints (Internal Algorithm)
+Run repository pytest suite from repo root:
+```bash
+pytest -q
+```
 
-The CP-SAT solver enforces:
+## iv. How to run linters
+From repo root:
+```bash
+ruff check .
+```
 
-1. Each course is assigned to exactly one module.
-2. Max courses per module.
-3. Teacher availability by module.
-4. Prerequisite ordering (`module(course) > module(prerequisite)`).
-5. A teacher teaches at most one course per module.
+Optional autofix:
+```bash
+ruff check . --fix
+```
 
-## Notes
+## v. How deployment works
+Deployment target is Koyeb with Python buildpack.
 
-- Business logic is intentionally kept out of views.
-- Domain classes are pure Python dataclasses without Django imports.
-- Scheduler errors are surfaced in the UI when no feasible schedule exists.
+- Build dependencies come from root `requirements.txt` (which includes this folder's `requirements.txt`).
+- Runtime command is defined in root `Procfile`:
+```bash
+gunicorn university_scheduler.wsgi:application --chdir university_scheduler --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+```
+- Production static files are served with WhiteNoise.
+
+Typical build steps:
+```bash
+pip install -r requirements.txt
+python manage.py collectstatic --noinput
+python manage.py migrate
+```
+
+## vi. Environment variables description
+- `DJANGO_SECRET_KEY`: required secret key.
+- `DJANGO_DEBUG`: `True` or `False`.
+- `DJANGO_ALLOWED_HOSTS`: comma-separated allowed hosts.
+- `DJANGO_CSRF_TRUSTED_ORIGINS`: comma-separated full origins.
+- `KOYEB_PUBLIC_DOMAIN`: Koyeb domain, auto-added to host/csrf lists in production.
+- `DATABASE_URL`: optional PostgreSQL URL (`postgres://...` or `postgresql://...`); SQLite is used when not set.
