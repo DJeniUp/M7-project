@@ -6,3 +6,5 @@ mypy
 pytest
 pytest-django
 pytest-cov
+ortools
+whitenoise
