@@ -1,0 +1,8 @@
+Django
+psycopg[binary]
+gunicorn
+ruff
+mypy
+pytest
+pytest-django
+pytest-cov
