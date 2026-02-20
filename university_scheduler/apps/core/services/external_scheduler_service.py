@@ -78,4 +78,3 @@ class ExternalSchedulerService:
             )
 
         return ordered_schedule
-

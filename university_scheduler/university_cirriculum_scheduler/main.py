@@ -71,7 +71,7 @@ def main():
     scheduler.export_schedule_csv("out_schedule.csv")
     scheduler.export_soft_violations_csv("out_soft_violations.csv")
 
-    print("\nWrote out_schedule.csv and out_soft_violations.csv") 
+    print("\nWrote out_schedule.csv and out_soft_violations.csv")
 
 
 if __name__ == "__main__":

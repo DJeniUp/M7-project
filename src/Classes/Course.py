@@ -5,7 +5,6 @@ class Course:
     name: str
     spesialization:str
     level:int
-    teacher: str 
+    teacher: str
     is_core:bool
     prerequisites: set[str] = field(default_factory=set)
-        
