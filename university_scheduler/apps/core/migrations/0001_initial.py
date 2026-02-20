@@ -69,4 +69,3 @@ class Migration(migrations.Migration):
             options={'ordering': ['name']},
         ),
     ]
-

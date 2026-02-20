@@ -45,7 +45,7 @@ class Teacher:
         if course_name not in self.can_teach_courses:
             return False
         return True
-    
+
 
     def availability_score(self, module):
         """Return a small score for availability preference (lower is better).
