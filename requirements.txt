@@ -4,16 +4,18 @@
 #
 #    pip-compile requirements.in
 #
+absl-py==2.4.0
+    # via ortools
 asgiref==3.11.1
     # via django
-colorama==0.4.6
-    # via pytest
 coverage[toml]==7.13.4
     # via pytest-cov
-django==5.2.11
+django==5.2.12
     # via -r requirements.in
 gunicorn==25.1.0
     # via -r requirements.in
+immutabledict==4.3.1
+    # via ortools
 iniconfig==2.3.0
     # via pytest
 librt==0.8.1
@@ -22,16 +24,26 @@ mypy==1.19.1
     # via -r requirements.in
 mypy-extensions==1.1.0
     # via mypy
+numpy==2.4.2
+    # via
+    #   ortools
+    #   pandas
+ortools==9.15.6755
+    # via -r requirements.in
 packaging==26.0
     # via
     #   gunicorn
     #   pytest
+pandas==3.0.1
+    # via ortools
 pathspec==1.0.4
     # via mypy
 pluggy==1.6.0
     # via
     #   pytest
     #   pytest-cov
+protobuf==6.33.5
+    # via ortools
 psycopg[binary]==3.3.3
     # via -r requirements.in
 psycopg-binary==3.3.3
@@ -47,17 +59,18 @@ pytest-cov==7.0.0
     # via -r requirements.in
 pytest-django==4.12.0
     # via -r requirements.in
+python-dateutil==2.9.0.post0
+    # via pandas
 ruff==0.15.2
     # via -r requirements.in
+six==1.17.0
+    # via python-dateutil
 sqlparse==0.5.5
     # via django
 typing-extensions==4.15.0
     # via
     #   mypy
+    #   ortools
     #   psycopg
-tzdata==2025.3
-    # via
-    #   django
-    #   psycopg
-ortools>=9.10,<10.0
-whitenoise>=6.7,<7.0
+whitenoise==6.12.0
+    # via -r requirements.in
